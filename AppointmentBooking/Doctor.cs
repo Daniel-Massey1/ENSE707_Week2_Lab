@@ -53,5 +53,11 @@ namespace ENSE707_AppointmentBooking
             AvailableSlots--;
             AppointmentsBookedToday++;
         }
+        public void ReleaseSlot()
+        {
+            // Releasing a slot gives one back to the doctor's availability,
+            // used when an appointment is cancelled.
+            AvailableSlots++;
+        }
     }
 }

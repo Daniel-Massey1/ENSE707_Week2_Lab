@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ENSE707_AppointmentBooking;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,10 +11,12 @@ namespace AppointmentBooking
     {
         public bool Success { get; }
         public string Message { get; }
-        public BookingResult(bool success, string message)
+        public Appointment Appointment { get; }
+        public BookingResult(bool success, string message, Appointment appointment = null)
         {
             Success = success;
             Message = message;
+            Appointment = appointment;
         }
     }
 }

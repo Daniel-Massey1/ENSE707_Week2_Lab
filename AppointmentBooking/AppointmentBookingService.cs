@@ -30,9 +30,31 @@ namespace ENSE707_AppointmentBooking
             if (!request.Doctor.HasAvailableSlot())
                 return new BookingResult(false, $"Appointment cannot be booked because {request.Doctor.FullName} has no available slots.");
 
+            var appointment = new Appointment(
+                Guid.NewGuid().ToString(),
+                request.Doctor,
+                request.Patient,
+                request.RequestedDate);
+
             request.Doctor.ReserveSlot();
 
-            return new BookingResult(true, $"Appointment booked successfully for {request.Patient.DisplayName} with {request.Doctor.FullName}.");
+            return new BookingResult(true, $"Appointment booked successfully for {request.Patient.DisplayName} with {request.Doctor.FullName}.", appointment);
         }
+
+
+        public void CancelAppointment(Appointment appointment)
+        {
+            // Guard against a null appointment reference so we fail clearly
+            // rather than throwing a confusing NullReferenceException later.
+            if (appointment == null)
+                throw new ArgumentNullException(nameof(appointment));
+
+            // Cancel() itself guards against double-cancellation.
+            appointment.Cancel();
+
+            // Give the doctor's slot back now that the appointment is cancelled.
+            appointment.Doctor.ReleaseSlot();
+        }
+
     }
 }
